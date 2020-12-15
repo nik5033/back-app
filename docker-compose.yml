@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=users
+    container_name: postgres
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+    expose:
+      - 5432
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nodejs
+    depends_on:
+      - database
+    ports:
+      - 4444:4444
+    links:
+      - "database:db"

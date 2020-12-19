@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
   Note.init({
     title: DataTypes.STRING,
     text: DataTypes.STRING,
-    data: DataTypes.STRING,
     userID: DataTypes.INTEGER
   }, {
     sequelize,

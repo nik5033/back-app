@@ -40,27 +40,6 @@ const SignInStrategy = new LocalStrategy({
         })
 })
 
-const SingUpStrategy = new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
-    passReqToCallBack: true
-}, function(username, password, done) {
-    UserExists(username)
-        .then(yes =>{
-            if(yes){
-                return done(null, false, {message: "User already exist"});
-            }
-            else{
-                    CreateUser(username, password, config.user)
-                        .then(user => {
-                            return done(null, user);
-                        })
-                        .catch(e => {console.log("Register error: " + e)})
-            }
-        })
-        .catch(e =>{console.log("Error: " + e)})
-})
-
 passport.serializeUser((user, done) => {
     done(null, user.id);
 })
@@ -73,6 +52,5 @@ passport.deserializeUser((id, done) => {
 })
 
 passport.use('login', SignInStrategy);
-passport.use('reg', SingUpStrategy);
 
 exports.passport = passport;

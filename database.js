@@ -86,12 +86,11 @@ async function FindAllNotes(username) {
     })
 }
 
-async function AddNote(username, title, text, data) {
+async function AddNote(username, title, text) {
     const User = await Find(username)
     let newNote = NoteModel.build({
         title: title,
         text: text,
-        data: data,
         userID: User.id
     })
 

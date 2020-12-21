@@ -14,9 +14,6 @@ const config = require('./config/configs')
 const PORT = process.env.PORT || 4444
 const app = express();
 
-app.use(express.static( __dirname + '/public'));
-app.set('view engine', 'pug');
-
 app.use(session({
     secret: config.secretKey,
     resave: true,

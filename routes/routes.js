@@ -28,7 +28,7 @@ router.post('/api/user/login',passport.authenticate('login',{
     failureRedirect: '/api/user/login',
     failureFlash: 'Invalid username or password.',
 }), (req, res) => {
-    res.send({success: true, username: req.body.username})
+    res.send({success: true, username: req.body.username, email: req.body.username})
 });
 
 router.post('/api/user/reg', (req, res) => {
@@ -61,7 +61,7 @@ router.post('/api/user/reg', (req, res) => {
 
 //note
 
-router.delete('/api/note/rm', (req, res) => {
+router.delete('/api/note/rm', IsAuth, (req, res) => {
     data.Find(req.body.username)
         .then(user => {
             if (user !== undefined && user !== null){
@@ -96,7 +96,7 @@ router.delete('/api/note/rm', (req, res) => {
         })
 })
 
-router.post('/api/note/add', (req, res) => {
+router.post('/api/note/add', IsAuth, (req, res) => {
     let username = req.body.username;
     let title = req.body.title;
     let text = req.body.text;
@@ -108,7 +108,7 @@ router.post('/api/note/add', (req, res) => {
                 data.AddNote(username, title, text, date)
                     .then(note => {
                         if (note !== undefined && note !== null) {
-                            res.send({success: true, message: "Note " + note.title + "was added"})
+                            res.send({success: true, title: note.title, text: note.text, date: note.createdAt, id: note.id})
                         }
                         else {
                             res.send({success: false})
@@ -130,7 +130,7 @@ router.post('/api/note/add', (req, res) => {
         })
 })
 
-router.get('/api/note/get', (req, res) => {
+router.get('/api/note/get', IsAuth, (req, res) => {
     let username = req.query.username;
 
     data.Find(username)
@@ -144,7 +144,7 @@ router.get('/api/note/get', (req, res) => {
                         else {
                             let arr = new Map();
                             notes.forEach((item, i, notes) => {
-                                arr.set(item.id, [item.title, item.text, item.data])
+                                arr.set(item.id, [item.title, item.text, item.createdAt])
                             })
                             res.send({success: true, notes: [...arr]})
                         }

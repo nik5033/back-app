@@ -3,14 +3,11 @@ const LocalStrategy = require('passport-local').Strategy;
 const Find = require('./database').Find;
 const bcrypt = require('bcryptjs');
 const FindById = require('./database').FindById;
-const CreateUser = require('./database').CreateUser;
 const GetPassword = require('./database').GetPassword;
-const config = require('./config/configs');
 
 const SignInStrategy = new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password',
-    passReqToCallBack: true,
     failureFlash: true
 }, function (username, password, done){
     Find(username)
